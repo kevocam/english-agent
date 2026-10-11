@@ -33,6 +33,7 @@ async def morning_tick(context: ContextTypes.DEFAULT_TYPE) -> None:
             chat_id=settings["telegram_chat_id"],
             text=messages.format_morning(items, now.toordinal()),
             parse_mode=ParseMode.HTML,
+            link_preview_options=messages.NO_PREVIEW,
         )
         await asyncio.to_thread(db.mark_morning_sent, session["id"])
         context.bot_data["morning_sent_date"] = now.date()

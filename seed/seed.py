@@ -35,7 +35,9 @@ def main() -> None:
     if contexts:
         db.table("contexts").upsert(contexts, on_conflict="name").execute()
 
-    items = [{**item, "lesson": lesson} for item in data["items"]]
+    # todas las filas con las mismas columnas (PostgREST lo exige en upserts masivos)
+    columns = ("type", "term", "definition", "example", "category", "ipa", "spoken")
+    items = [{c: item.get(c) for c in columns} | {"lesson": lesson} for item in data["items"]]
     db.table("items").upsert(items, on_conflict="term,type").execute()
 
     print(f"✅ {lesson}: {len(items)} items y {len(contexts)} contextos cargados")

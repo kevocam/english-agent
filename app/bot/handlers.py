@@ -36,7 +36,9 @@ async def today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if settings is None:
         return
     _, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
-    await update.effective_message.reply_text(messages.format_today(items), parse_mode=ParseMode.HTML)
+    await update.effective_message.reply_text(
+        messages.format_today(items), parse_mode=ParseMode.HTML, link_preview_options=messages.NO_PREVIEW
+    )
 
 
 def build_application() -> Application:

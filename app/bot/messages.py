@@ -1,4 +1,10 @@
 from html import escape
+from urllib.parse import quote
+
+from telegram import LinkPreviewOptions
+
+# Sin preview: con 3 links de audio el mensaje se llenaría de tarjetas
+NO_PREVIEW = LinkPreviewOptions(is_disabled=True)
 
 TYPE_LABEL = {
     "vocab": "📘 Vocab",
@@ -19,11 +25,19 @@ WELCOME = (
 NOT_OWNER = "🔒 This is a private bot."
 
 
+def listen_url(item: dict) -> str:
+    """YouGlish: clips reales de YouTube con la palabra dicha por nativos (inglés US)."""
+    spoken = item.get("spoken") or item["term"]
+    return f"https://youglish.com/pronounce/{quote(spoken)}/english/us"
+
+
 def format_item(item: dict, index: int) -> str:
     lines = [
         f"<b>{index}. {escape(item['term'])}</b>  <i>{TYPE_LABEL.get(item['type'], item['type'])}</i>",
-        escape(item["definition"]),
     ]
+    pron = f"🗣 <code>{escape(item['ipa'])}</code>  " if item.get("ipa") else "🗣 "
+    lines.append(f'{pron}<a href="{escape(listen_url(item))}">🔊 listen</a>')
+    lines.append(escape(item["definition"]))
     if item.get("example"):
         lines.append(f"✏️ <i>{escape(item['example'])}</i>")
     return "\n".join(lines)
