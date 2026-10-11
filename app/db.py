@@ -39,27 +39,38 @@ def get_or_create_today_session(settings: dict) -> tuple[dict, list[dict]]:
     today = today_local(settings)
 
     found = db.table("daily_sessions").select("*").eq("session_date", today.isoformat()).execute().data
-    if found:
-        session = found[0]
-    else:
+    session = found[0] if found else None
+
+    if session is None or not session["item_ids"]:
+        # Los nuevos siempre están disponibles, sin importar su due_date
+        # (la DB está en UTC y su "hoy" puede ir un día adelante de Lima).
         due = (
             db.table("srs_state")
             .select("item_id, status, due_date, repetitions")
-            .lte("due_date", today.isoformat())
+            .or_(f"status.eq.new,due_date.lte.{today.isoformat()}")
             .execute()
             .data
         )
         item_ids = choose_items(due, settings["items_per_day"])
-        session = (
-            db.table("daily_sessions")
-            .insert({"session_date": today.isoformat(), "item_ids": item_ids})
-            .execute()
-            .data[0]
-        )
+        if session is None:
+            session = (
+                db.table("daily_sessions")
+                .insert({"session_date": today.isoformat(), "item_ids": item_ids})
+                .execute()
+                .data[0]
+            )
+        elif item_ids:  # sesión vacía de antes: la rellenamos
+            session = (
+                db.table("daily_sessions")
+                .update({"item_ids": item_ids})
+                .eq("id", session["id"])
+                .execute()
+                .data[0]
+            )
 
     if not session["item_ids"]:
         return session, []
     items = db.table("items").select("*").in_("id", session["item_ids"]).execute().data
     order = {item_id: i for i, item_id in enumerate(session["item_ids"])}
-    items.sort(key=lambda it: order[it["id"]])
+    items = sorted((it for it in items if it["id"] in order), key=lambda it: order[it["id"]])
     return session, items
