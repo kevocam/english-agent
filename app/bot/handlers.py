@@ -5,6 +5,7 @@ from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes
 
 from app import config, db
+from app.jobs import register_jobs
 from app.bot import messages
 
 
@@ -42,4 +43,5 @@ def build_application() -> Application:
     app = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler(["hoy", "today"], today))
+    register_jobs(app)
     return app

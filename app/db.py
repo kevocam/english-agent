@@ -74,3 +74,9 @@ def get_or_create_today_session(settings: dict) -> tuple[dict, list[dict]]:
     order = {item_id: i for i, item_id in enumerate(session["item_ids"])}
     items = sorted((it for it in items if it["id"] in order), key=lambda it: order[it["id"]])
     return session, items
+
+
+def mark_morning_sent(session_id: str) -> None:
+    client().table("daily_sessions").update(
+        {"morning_sent_at": datetime.now(timezone.utc).isoformat()}
+    ).eq("id", session_id).execute()

@@ -1,9 +1,13 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
 from app import config
 from app.bot.handlers import build_application
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+logging.getLogger("httpx").setLevel(logging.WARNING)  # no loguear cada polling
 
 
 @asynccontextmanager
