@@ -33,7 +33,8 @@ _client: AsyncAnthropic | None = None
 def _anthropic() -> AsyncAnthropic:
     global _client
     if _client is None:
-        _client = AsyncAnthropic(api_key=config.ANTHROPIC_API_KEY)
+        headers = {"anthropic-workspace-id": config.ANTHROPIC_WORKSPACE_ID} if config.ANTHROPIC_WORKSPACE_ID else None
+        _client = AsyncAnthropic(api_key=config.ANTHROPIC_API_KEY, default_headers=headers)
     return _client
 
 
