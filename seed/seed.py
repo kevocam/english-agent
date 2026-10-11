@@ -22,7 +22,7 @@ DEFAULT_FILE = Path(__file__).resolve().parent / "lesson-1.json"
 
 def main() -> None:
     load_dotenv(ROOT / ".env")
-    url = os.environ["SUPABASE_URL"]
+    url = os.environ["SUPABASE_URL"].rstrip("/").removesuffix("/rest/v1")
     key = os.environ["SUPABASE_KEY"]  # secret / service_role key (RLS está activo)
 
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_FILE
