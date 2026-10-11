@@ -1,0 +1,62 @@
+{
+  "lesson": "lesson-1",
+  "contexts": [
+    {
+      "name": "Agile & Scrum",
+      "description": "Kanban boards, To Do / In Progress / Done, blockers, Daily Standups and Sprint planning.",
+      "keywords": ["kanban", "blocker", "daily standup", "sprint planning", "backlog"]
+    },
+    {
+      "name": "Mentorship",
+      "description": "The two-way mentor/mentee relationship: guidance, learning from mistakes and professional growth.",
+      "keywords": ["mentor", "mentee", "guidance", "growth", "mistakes"]
+    },
+    {
+      "name": "Workplace Communication",
+      "description": "Handling conflicts respectfully, giving feedback without criticism and fostering collaboration.",
+      "keywords": ["conflict", "feedback", "collaboration", "respect"]
+    }
+  ],
+  "items": [
+    {"type": "vocab", "category": "leadership_verbs", "term": "empower", "definition": "To give someone authority or confidence.", "example": "Good Scrum Masters empower the team to make their own decisions."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "foster", "definition": "To encourage the development of something.", "example": "Daily standups help foster trust within the team."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "guide", "definition": "To show the way.", "example": "She guided the new developer during his first sprint."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "facilitate", "definition": "To make an action or process easier.", "example": "The Scrum Master facilitates the sprint planning meeting."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "align", "definition": "To agree or coordinate with others.", "example": "We need to align with the QA team before the release."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "convey", "definition": "To communicate a message or feeling.", "example": "It was hard to convey the urgency of the bug to the client."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "address", "definition": "To think about and begin to deal with an issue.", "example": "We should address this blocker before the end of the day."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "encourage", "definition": "To give support or confidence to someone.", "example": "I always encourage my mentees to ask questions."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "acknowledge", "definition": "To accept or admit the existence or truth of something.", "example": "The lead acknowledged that the estimate was too optimistic."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "clarify", "definition": "To make a statement less confusing.", "example": "Could you clarify the acceptance criteria for this story?"},
+    {"type": "vocab", "category": "leadership_verbs", "term": "thrive", "definition": "To grow or develop well.", "example": "Junior developers thrive when they get constructive feedback."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "enhance", "definition": "To improve the quality or value of something.", "example": "Adding E2E tests enhanced the stability of the app."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "cultivate", "definition": "To try to acquire or develop a quality or skill.", "example": "He is cultivating his leadership skills by mentoring others."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "overcome", "definition": "To succeed in dealing with a problem.", "example": "The team overcame the deployment issues in two days."},
+    {"type": "vocab", "category": "leadership_verbs", "term": "drive", "definition": "To propel or carry along.", "example": "Clear goals drive positive growth in the team."},
+
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "step up", "definition": "To take responsibility for something and take action.", "example": "When the lead got sick, Ana stepped up and ran the daily."},
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "sort out", "definition": "To resolve a problem or difficulty.", "example": "Let's sort out the merge conflicts before the demo."},
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "guide through", "definition": "To help someone understand or do something difficult.", "example": "I guided him through the deployment process step by step."},
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "find out", "definition": "To discover information.", "example": "We need to find out why the tests are failing."},
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "make up", "definition": "To reconcile after an argument.", "example": "After the heated retro, they made up over coffee."},
+    {"type": "phrasal", "category": "phrasal_verbs", "term": "take on", "definition": "To accept (a challenge or responsibility).", "example": "She decided to take on the migration to the new API."},
+
+    {"type": "idiom", "category": "idioms_expressions", "term": "on the same page", "definition": "To have the same understanding or knowledge.", "example": "Let's have a quick call to make sure we're on the same page."},
+    {"type": "idiom", "category": "idioms_expressions", "term": "take the lead", "definition": "To act first or take charge of a situation.", "example": "I'll take the lead on the frontend refactor."},
+    {"type": "idiom", "category": "idioms_expressions", "term": "active listening", "definition": "Fully concentrating on what is being said.", "example": "Active listening is key during one-on-ones with your mentee."},
+    {"type": "idiom", "category": "idioms_expressions", "term": "constructive feedback", "definition": "Useful comments and suggestions that contribute to a positive outcome.", "example": "The code review gave me constructive feedback on my tests."},
+    {"type": "idiom", "category": "idioms_expressions", "term": "informed decisions", "definition": "Choices made based on good information and understanding.", "example": "Metrics from the last sprint help us make informed decisions."},
+
+    {"type": "grammar", "category": "deduction_present", "term": "must be + noun/adjective/-ing", "definition": "100% certainty that something IS happening now.", "example": "She is not replying, she must be busy."},
+    {"type": "grammar", "category": "deduction_present", "term": "can't be + noun/adjective/-ing", "definition": "100% certainty that something is IMPOSSIBLE now.", "example": "They are laughing, they can't be arguing."},
+    {"type": "grammar", "category": "deduction_past", "term": "must have + past participle", "definition": "100% certainty that something happened.", "example": "The code works, they must have fixed the bug."},
+    {"type": "grammar", "category": "deduction_past", "term": "can't have + past participle", "definition": "100% certainty that something did NOT happen.", "example": "He didn't know about the meeting; he can't have read the email."},
+    {"type": "grammar", "category": "deduction_past", "term": "might have / could have + past participle", "definition": "Possibility or uncertainty about the past.", "example": "They might have reached an agreement, but I'm not sure."},
+    {"type": "grammar", "category": "connectors_purpose", "term": "so that + subject + can/could", "definition": "Expresses purpose. Use 'could' for past actions and 'can' for present.", "example": "I used a Kanban board so that we could stay organized."},
+    {"type": "grammar", "category": "connectors_purpose", "term": "in order to + base verb", "definition": "Expresses purpose.", "example": "In order to achieve success, we must build trust."},
+    {"type": "grammar", "category": "connectors_contrast", "term": "although / even though", "definition": "Introduces a contrast inside the same sentence.", "example": "Although building this bond takes time, it is worth it."},
+    {"type": "grammar", "category": "connectors_contrast", "term": "however", "definition": "Introduces a contrast with the previous sentence; used with a comma.", "example": "The project was difficult. However, we finished on time."},
+    {"type": "grammar", "category": "connectors_result", "term": "as a result", "definition": "Introduces a consequence.", "example": "Mentors share experiences; as a result, the team grows."},
+    {"type": "grammar", "category": "connectors_result", "term": "therefore", "definition": "Introduces a logical consequence.", "example": "The server crashed. Therefore, we lost the data."}
+  ]
+}
