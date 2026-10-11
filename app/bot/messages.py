@@ -19,10 +19,13 @@ WELCOME = (
     "and I'll keep reminding you until you practice them.\n\n"
     "Commands:\n"
     "/hoy — today's items\n"
-    "/start — show this message"
+    "/start — show this message\n\n"
+    "💬 Or just write to me in English: ask about a word, or practice a sentence and I'll correct it."
 )
 
 NOT_OWNER = "🔒 This is a private bot."
+NO_LLM = "⚙️ The tutor isn't configured yet (missing ANTHROPIC_API_KEY)."
+TUTOR_ERROR = "😵 Oops, I couldn't answer that right now. Try again in a minute."
 
 
 def listen_url(item: dict) -> str:

@@ -14,11 +14,11 @@ y me persigue hasta que las uso en contexto. Repaso espaciado para no olvidar na
 - [x] H1 · Esquema de DB + seed del curso (37 items)
 - [x] Bot por polling: `/start` (bot privado) y `/hoy`
 - [x] H2 · Mensaje automático a las 6:00 con los items del día
-- [ ] Deploy en Railway (webhook)
+- [x] Deploy en Railway (polling; webhook queda como mejora)
 
 ## MVP (siguientes sprints)
 - [ ] H3 · Ejercicios en contexto de trabajo (oración, hueco, traducción, conector, deducción)
-- [ ] H4 · Corrección con Claude + score 0–5
+- [~] H4 · Corrección con Claude + score 0–5 (tutor libre listo; falta score)
 - [ ] H5 · Insistencia escalonada si no respondo
 - [ ] H6 · Repaso espaciado SM-2 (calificación → próxima fecha)
 - [ ] H7 · Gramática dentro del repaso

@@ -1,10 +1,11 @@
 import asyncio
+import logging
 
 from telegram import Update
-from telegram.constants import ParseMode
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.constants import ChatAction, ParseMode
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-from app import config, db
+from app import config, db, tutor
 from app.jobs import register_jobs
 from app.bot import messages
 
@@ -41,9 +42,34 @@ async def today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
 
+log = logging.getLogger(__name__)
+
+
+async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Cualquier texto que no sea comando: lo responde el tutor (Claude)."""
+    settings = await _owner_settings(update)
+    if settings is None:
+        return
+    if not config.ANTHROPIC_API_KEY:
+        await update.effective_message.reply_text(messages.NO_LLM)
+        return
+
+    await update.effective_chat.send_action(ChatAction.TYPING)
+    try:
+        _, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
+        history = context.chat_data.setdefault("history", [])
+        answer = await tutor.reply(history, update.effective_message.text, items)
+    except Exception:
+        log.exception("El tutor falló")
+        await update.effective_message.reply_text(messages.TUTOR_ERROR)
+        return
+    await update.effective_message.reply_text(answer, link_preview_options=messages.NO_PREVIEW)
+
+
 def build_application() -> Application:
     app = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler(["hoy", "today"], today))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, chat))
     register_jobs(app)
     return app
