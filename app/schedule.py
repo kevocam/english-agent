@@ -44,6 +44,19 @@ def is_quiet(settings: dict, now: datetime) -> bool:
     return is_sleeping(settings, now) or in_class(settings, now) or is_paused(settings, now)
 
 
+def nudge_due(settings: dict, now: datetime, session: dict) -> bool:
+    """¿Toca insistir con el ejercicio pendiente? Intervalos 10 → 20 → 40 (luego cada 40)."""
+    if not session.get("current_exercise") or session.get("status") == "done" or is_quiet(settings, now):
+        return False
+    ref = session.get("last_nudge_at") or session.get("exercise_sent_at")
+    if not ref:
+        return False
+    intervals = settings.get("nudge_intervals_min") or [10, 20, 40]
+    wait_min = intervals[min(session.get("nudge_count") or 0, len(intervals) - 1)]
+    elapsed_min = (now - datetime.fromisoformat(ref)).total_seconds() / 60
+    return elapsed_min >= wait_min
+
+
 def morning_due(settings: dict, now: datetime, already_sent: bool) -> bool:
     """¿Toca mandar el mensaje de la mañana?
 

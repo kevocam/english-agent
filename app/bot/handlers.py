@@ -5,9 +5,11 @@ from telegram import Update
 from telegram.constants import ChatAction, ParseMode
 from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters
 
-from app import config, db, tutor
+from app import config, db, practice, tutor
 from app.jobs import register_jobs
 from app.bot import messages
+
+log = logging.getLogger(__name__)
 
 
 async def _owner_settings(update: Update) -> dict | None:
@@ -36,13 +38,22 @@ async def today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     settings = await _owner_settings(update)
     if settings is None:
         return
-    _, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
-    await update.effective_message.reply_text(
-        messages.format_today(items), parse_mode=ParseMode.HTML, link_preview_options=messages.NO_PREVIEW
-    )
+    session, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
+    await _send(update, [messages.format_today(items)])
+    if config.ANTHROPIC_API_KEY:
+        try:
+            await _send(update, await practice.start(session, items))
+        except Exception:
+            log.exception("No se pudo arrancar la práctica")
+            await update.effective_message.reply_text(messages.TUTOR_ERROR)
 
 
-log = logging.getLogger(__name__)
+async def _send(update: Update, texts: list[str]) -> None:
+    for text in texts:
+        await update.effective_message.reply_text(
+            text, parse_mode=ParseMode.HTML, link_preview_options=messages.NO_PREVIEW
+        )
+
 
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -55,10 +66,15 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         return
 
     await update.effective_chat.send_action(ChatAction.TYPING)
+    text = update.effective_message.text
     try:
-        _, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
+        session, items = await asyncio.to_thread(db.get_or_create_today_session, settings)
+        if practice.is_pending(session) and items:
+            # Hay un ejercicio esperando: Claude decide si es respuesta o pregunta
+            await _send(update, await practice.handle_message(session, items, text, settings))
+            return
         history = context.chat_data.setdefault("history", [])
-        answer = await tutor.reply(history, update.effective_message.text, items)
+        answer = await tutor.reply(history, text, items)
     except Exception:
         log.exception("El tutor falló")
         await update.effective_message.reply_text(messages.TUTOR_ERROR)

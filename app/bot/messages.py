@@ -67,3 +67,15 @@ MOTIVATION = [
 def format_morning(items: list[dict], day_index: int) -> str:
     motivation = MOTIVATION[day_index % len(MOTIVATION)]
     return f"🌅 <b>Good morning, Kevo!</b>\n<i>{escape(motivation)}</i>\n\n" + format_today(items)
+
+
+NUDGES = [
+    "⏰ <b>Quick reminder</b> — your exercise is waiting:",
+    "👀 <b>Still there, Kevo?</b> Just one answer:",
+    "🔔 <b>Kevo!</b> 2 minutes of English, let's go:",
+]
+
+
+def format_nudge(exercise: str, nudge_count: int) -> str:
+    head = NUDGES[min(nudge_count, len(NUDGES) - 1)]
+    return f"{head}\n{escape(exercise)}"

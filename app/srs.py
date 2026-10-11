@@ -1,6 +1,40 @@
-"""Repaso espaciado. Por ahora solo la selección diaria; la calificación SM-2 llega en la historia 6."""
+"""Repaso espaciado: selección diaria + algoritmo SM-2."""
 
 import random
+from datetime import date, timedelta
+
+MASTERED_INTERVAL_DAYS = 21  # si el próximo repaso es en 3+ semanas, se considera dominado
+
+
+def sm2(state: dict, quality: int, today: date) -> dict:
+    """Aplica SM-2 (el de Anki clásico) y devuelve los campos nuevos de srs_state.
+
+    quality: 0–5. Menos de 3 = fallo → vuelve mañana y se reinicia la racha.
+    """
+    q = max(0, min(5, quality))
+    ef = float(state["ease_factor"])
+    reps = state["repetitions"]
+    interval = state["interval_days"]
+
+    if q < 3:
+        reps, interval = 0, 1
+    else:
+        reps += 1
+        if reps == 1:
+            interval = 1
+        elif reps == 2:
+            interval = 6
+        else:
+            interval = round(interval * ef)
+    ef = max(1.3, ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)))
+
+    return {
+        "ease_factor": round(ef, 2),
+        "repetitions": reps,
+        "interval_days": interval,
+        "due_date": (today + timedelta(days=interval)).isoformat(),
+        "status": "mastered" if interval >= MASTERED_INTERVAL_DAYS else "learning",
+    }
 
 
 def choose_items(due_rows: list[dict], n: int, rng: random.Random | None = None) -> list[str]:

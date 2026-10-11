@@ -16,12 +16,18 @@ y me persigue hasta que las uso en contexto. Repaso espaciado para no olvidar na
 - [x] H2 · Mensaje automático a las 6:00 con los items del día
 - [x] Deploy en Railway (polling; webhook queda como mejora)
 
+## Sprint 2 · "El bot me hace practicar"
+Decisiones PO: ejercicios en cadena · generados en el momento por Claude · 1 reintento si score < 3 ·
+Claude detecta si un mensaje es respuesta o pregunta.
+- [x] Tutor libre con Claude (mensajes sin ejercicio pendiente)
+- [x] H3 · Ejercicios en cadena tras el mensaje de las 6:00 (oración, hueco, traducción, situación, deducción, conector)
+- [x] H4 · Calificación 0–5 + corrección + 1 reintento
+- [x] H6 · SM-2 (se califica con el primer intento)
+- [x] H7 · Gramática dentro del repaso (mismo flujo, ejercicios de deducción/conector)
+- [x] H5 · Insistencia 10 → 20 → 40 min (luego cada 40) solo con ejercicio pendiente
+- [ ] Webhook en Railway (elimina el error Conflict en deploys)
+
 ## MVP (siguientes sprints)
-- [ ] H3 · Ejercicios en contexto de trabajo (oración, hueco, traducción, conector, deducción)
-- [~] H4 · Corrección con Claude + score 0–5 (tutor libre listo; falta score)
-- [ ] H5 · Insistencia escalonada si no respondo
-- [ ] H6 · Repaso espaciado SM-2 (calificación → próxima fecha)
-- [ ] H7 · Gramática dentro del repaso
 - [ ] H8 · Mar/jue: calentamiento 15:30 + check post-clase 17:05
 - [ ] H9 · Comandos de config: `/pausa`, `/horario`
 - [ ] H10 · Cápsulas cada 3 h

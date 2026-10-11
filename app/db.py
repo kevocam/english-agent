@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 from supabase import Client, create_client
 
 from app import config
-from app.srs import choose_items
+from app.srs import choose_items, sm2
 
 
 @lru_cache
@@ -80,3 +80,35 @@ def mark_morning_sent(session_id: str) -> None:
     client().table("daily_sessions").update(
         {"morning_sent_at": datetime.now(timezone.utc).isoformat()}
     ).eq("id", session_id).execute()
+
+
+# ---------- práctica ----------
+
+def update_session(session_id: str, fields: dict) -> dict:
+    return client().table("daily_sessions").update(fields).eq("id", session_id).execute().data[0]
+
+
+def save_attempt(fields: dict) -> None:
+    client().table("attempts").insert(fields).execute()
+
+
+def apply_review(item_id: str, quality: int, today: date) -> dict:
+    """Califica un item con SM-2 y guarda su próximo repaso."""
+    db = client()
+    state = db.table("srs_state").select("*").eq("item_id", item_id).single().execute().data
+    new = sm2(state, quality, today) | {"last_reviewed_at": datetime.now(timezone.utc).isoformat()}
+    db.table("srs_state").update(new).eq("item_id", item_id).execute()
+    return new
+
+
+def get_today_session(settings: dict) -> dict | None:
+    """Sesión de hoy sin crearla (para los ticks)."""
+    found = (
+        client().table("daily_sessions").select("*")
+        .eq("session_date", today_local(settings).isoformat()).execute().data
+    )
+    return found[0] if found else None
+
+
+def mark_nudged(session_id: str, nudge_count: int) -> None:
+    update_session(session_id, {"nudge_count": nudge_count, "last_nudge_at": datetime.now(timezone.utc).isoformat()})
